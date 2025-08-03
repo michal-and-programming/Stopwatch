@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import Container from "./components/Container/Container";
+import Stopwatch from "./components/Stopwatch/Stopwatch";
+import Buttons from "./components/Buttons/Buttons";
+import React, { useState, useEffect } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App= () => {
+  const [time, setTime] = useState(0);
+  const [timer, setTimer] = useState('');
+
+  const start = () => {
+   setTimer(setInterval(() => {
+     setTime(prevValue => prevValue + 1);
+   }, 1))
+ };
+
+  const stop = () => {
+    clearInterval(timer);
+    setTimer('');
+  };
+
+  const reset = () => {
+    stop();
+    setTime(0);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [timer]);
+
+  return(
+    <Container>
+      <Stopwatch time={time} />
+      <Buttons start={start} stop={stop} reset={reset}/>
+    </Container>
+  )
 }
 
 export default App;
